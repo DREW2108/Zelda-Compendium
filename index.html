@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
@@ -19,17 +18,12 @@
          FONDO
     ====================================================== -->
 
-    <div class="background">
-
-        <div class="glow glow-1"></div>
-        <div class="glow glow-2"></div>
-        <div class="glow glow-3"></div>
-
-    </div>
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
 
 
     <!-- =====================================================
-         APLICACIÓN
+         APP
     ====================================================== -->
 
     <main class="app">
@@ -39,7 +33,7 @@
              HEADER
         ================================================== -->
 
-        <header class="topbar glass">
+        <header class="top-header">
 
             <div class="brand">
 
@@ -48,13 +42,8 @@
                 </div>
 
                 <div>
-
                     <h1>Hyrule Compendium</h1>
-
-                    <span>
-                        Breath of the Wild · Tears of the Kingdom
-                    </span>
-
+                    <p>Breath of the Wild · Tears of the Kingdom</p>
                 </div>
 
             </div>
@@ -62,32 +51,38 @@
 
             <!-- BUSCADOR -->
 
-            <div class="search-box">
+            <div class="search-wrapper">
 
-                <i data-lucide="search"></i>
+                <div class="search-box">
 
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Buscar en Hyrule..."
-                    autocomplete="off"
-                >
+                    <i data-lucide="search"></i>
 
-                <kbd>⌘ K</kbd>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Buscar en Hyrule..."
+                        autocomplete="off"
+                    >
+
+                    <span class="shortcut">
+                        ⌘ K
+                    </span>
+
+                </div>
+
+
+                <!-- RESULTADOS -->
+
+                <div
+                    id="searchResults"
+                    class="search-results"
+                ></div>
 
             </div>
 
 
-            <!-- CONFIGURACIÓN -->
-
-            <button
-                class="icon-button"
-                id="settingsButton"
-                aria-label="Configuración"
-            >
-
+            <button class="settings-button">
                 <i data-lucide="settings"></i>
-
             </button>
 
         </header>
@@ -98,94 +93,56 @@
              SELECTOR DE JUEGO
         ================================================== -->
 
-        <section class="game-selector glass">
+        <section class="game-selector">
 
-
-            <!-- BOTW -->
 
             <button
                 class="game-button active"
                 data-game-select="botw"
             >
 
-                <div class="game-symbol botw-symbol">
-
+                <span class="game-icon botw-icon">
                     <i data-lucide="sparkles"></i>
+                </span>
 
-                </div>
-
-
-                <div class="game-info">
-
-                    <strong>
-                        Breath of the Wild
-                    </strong>
-
-                    <span>
-                        Sheikah
-                    </span>
-
-                </div>
+                <span>
+                    <strong>Breath of the Wild</strong>
+                    <small>Sheikah</small>
+                </span>
 
             </button>
 
-
-
-            <!-- TOTK -->
 
             <button
                 class="game-button"
                 data-game-select="totk"
             >
 
-                <div class="game-symbol totk-symbol">
-
+                <span class="game-icon totk-icon">
                     <i data-lucide="zap"></i>
+                </span>
 
-                </div>
-
-
-                <div class="game-info">
-
-                    <strong>
-                        Tears of the Kingdom
-                    </strong>
-
-                    <span>
-                        Zonai
-                    </span>
-
-                </div>
+                <span>
+                    <strong>Tears of the Kingdom</strong>
+                    <small>Zonai</small>
+                </span>
 
             </button>
 
-
-
-            <!-- AMBOS -->
 
             <button
                 class="game-button"
                 data-game-select="all"
             >
 
-                <div class="game-symbol all-symbol">
-
+                <span class="game-icon all-icon">
                     <i data-lucide="layers"></i>
+                </span>
 
-                </div>
-
-
-                <div class="game-info">
-
-                    <strong>
-                        Ambos juegos
-                    </strong>
-
-                    <span>
-                        Hyrule
-                    </span>
-
-                </div>
+                <span>
+                    <strong>Ambos juegos</strong>
+                    <small>Hyrule</small>
+                </span>
 
             </button>
 
@@ -194,176 +151,111 @@
 
 
         <!-- =================================================
-             CONTENIDO
+             CONTENIDO PRINCIPAL
         ================================================== -->
 
-        <section class="content">
+        <div class="content-layout">
 
 
             <!-- =================================================
                  SIDEBAR
             ================================================== -->
 
-            <aside class="sidebar glass">
+            <aside class="sidebar">
+
+                <span class="sidebar-title">
+                    EXPLORAR
+                </span>
 
 
-                <div class="sidebar-title">
-                    <span>Explorar</span>
-                </div>
+                <button class="nav-item active">
+                    <i data-lucide="grid-2x2"></i>
+                    <span>Resumen</span>
+                </button>
 
 
-                <nav>
-
-                    <button class="nav-item active">
-
-                        <i data-lucide="layout-grid"></i>
-
-                        <span>
-                            Resumen
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="swords"></i>
+                    <span>Armas</span>
+                </button>
 
 
-                    <button class="nav-item">
-
-                        <i data-lucide="swords"></i>
-
-                        <span>
-                            Armas
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="shield"></i>
+                    <span>Escudos</span>
+                </button>
 
 
-                    <button class="nav-item">
-
-                        <i data-lucide="shield"></i>
-
-                        <span>
-                            Escudos
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="bow-arrow"></i>
+                    <span>Arcos</span>
+                </button>
 
 
-                    <button class="nav-item">
-
-                        <i data-lucide="bow-arrow"></i>
-
-                        <span>
-                            Arcos
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="shirt"></i>
+                    <span>Armaduras</span>
+                </button>
 
 
-                    <button class="nav-item">
-
-                        <i data-lucide="shirt"></i>
-
-                        <span>
-                            Armaduras
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="apple"></i>
+                    <span>Ingredientes</span>
+                </button>
 
 
-                    <button class="nav-item">
-
-                        <i data-lucide="apple"></i>
-
-                        <span>
-                            Ingredientes
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="skull"></i>
+                    <span>Enemigos</span>
+                </button>
 
 
-                    <button class="nav-item">
-
-                        <i data-lucide="skull"></i>
-
-                        <span>
-                            Enemigos
-                        </span>
-
-                    </button>
-
-
-                    <button class="nav-item">
-
-                        <i data-lucide="gem"></i>
-
-                        <span>
-                            Materiales
-                        </span>
-
-                    </button>
-
-                </nav>
+                <button class="nav-item">
+                    <i data-lucide="gem"></i>
+                    <span>Materiales</span>
+                </button>
 
 
                 <div class="sidebar-divider"></div>
 
 
-                <div class="sidebar-title">
-                    <span>Mapa</span>
-                </div>
+                <span class="sidebar-title">
+                    MAPA
+                </span>
 
 
-                <nav>
-
-                    <button class="nav-item map-item">
-
-                        <i data-lucide="map"></i>
-
-                        <span>
-                            Mapa de Hyrule
-                        </span>
-
-                    </button>
+                <button class="nav-item">
+                    <i data-lucide="map"></i>
+                    <span>Mapa de Hyrule</span>
+                </button>
 
 
-                    <button class="nav-item map-item">
-
-                        <i data-lucide="map-pin"></i>
-
-                        <span>
-                            Ubicaciones
-                        </span>
-
-                    </button>
-
-                </nav>
+                <button class="nav-item">
+                    <i data-lucide="map-pin"></i>
+                    <span>Ubicaciones</span>
+                </button>
 
             </aside>
 
 
 
             <!-- =================================================
-                 PANEL PRINCIPAL
+                 MAIN
             ================================================== -->
 
-            <section class="main-panel">
+            <section class="main-content">
 
 
-                <!-- =================================================
-                     WELCOME
-                ================================================== -->
+                <!-- HERO -->
 
-                <div class="welcome glass">
+                <section class="hero main-panel">
 
 
-                    <div class="welcome-content">
-
+                    <div class="hero-content">
 
                         <span class="eyebrow">
-
                             <i data-lucide="compass"></i>
-
-                            Explorando Hyrule
-
+                            EXPLORANDO HYRULE
                         </span>
 
 
@@ -373,14 +265,12 @@
 
 
                         <p id="welcomeDescription">
-
                             Descubre armas, enemigos, lugares,
                             materiales y secretos de Hyrule.
-
                         </p>
 
 
-                        <button class="primary-button">
+                        <button class="explore-button">
 
                             <i data-lucide="map"></i>
 
@@ -391,26 +281,24 @@
                     </div>
 
 
+                    <!-- IMAGEN -->
 
-                    <!-- =================================================
-                         IMAGEN DEL JUEGO
-                    ================================================== -->
-
-                    <div class="welcome-image-container">
-
-                        <div class="welcome-image-glow"></div>
-
+                    <div class="hero-image">
 
                         <img
                             id="gameImage"
-                            class="welcome-game-image"
                             src="images/botw.jpg"
                             alt="Breath of the Wild"
                         >
 
                     </div>
 
-                </div>
+
+                    <!-- DEGRADADO SOBRE LA IMAGEN -->
+
+                    <div class="hero-image-overlay"></div>
+
+                </section>
 
 
 
@@ -418,242 +306,123 @@
                      CATEGORÍAS
                 ================================================== -->
 
-                <div class="section-header">
+                <section class="categories-section">
 
-                    <div>
+                    <div class="section-header">
 
-                        <span>
-                            Compendio
-                        </span>
+                        <div>
 
-                        <h3>
-                            Categorías
-                        </h3>
+                            <span>
+                                COMPENDIO
+                            </span>
+
+                            <h3>
+                                Categorías
+                            </h3>
+
+                        </div>
+
+                        <button class="view-all">
+                            Ver todo →
+                        </button>
 
                     </div>
 
 
-                    <button class="small-button">
 
-                        Ver todo
+                    <div class="category-grid">
 
-                        <i data-lucide="arrow-right"></i>
 
-                    </button>
+                        <article class="category-card">
 
-                </div>
+                            <div class="category-icon">
+                                <i data-lucide="swords"></i>
+                            </div>
 
+                            <div>
+                                <h4>Armas</h4>
+                                <p>Espadas, lanzas y más</p>
+                            </div>
 
+                            <i
+                                class="arrow"
+                                data-lucide="chevron-right"
+                            ></i>
 
-                <div class="category-grid">
+                        </article>
 
 
-                    <!-- ARMAS -->
 
-                    <article class="category-card glass">
+                        <article class="category-card">
 
-                        <div class="category-icon">
+                            <div class="category-icon">
+                                <i data-lucide="shield"></i>
+                            </div>
 
-                            <i data-lucide="swords"></i>
+                            <div>
+                                <h4>Escudos</h4>
+                                <p>Protección de Hyrule</p>
+                            </div>
 
-                        </div>
+                            <i
+                                class="arrow"
+                                data-lucide="chevron-right"
+                            ></i>
 
+                        </article>
 
-                        <div>
 
-                            <h4>
-                                Armas
-                            </h4>
 
-                            <p>
-                                Espadas, lanzas y más
-                            </p>
+                        <article class="category-card">
 
-                        </div>
+                            <div class="category-icon">
+                                <i data-lucide="bow-arrow"></i>
+                            </div>
 
+                            <div>
+                                <h4>Arcos</h4>
+                                <p>Arcos y munición</p>
+                            </div>
 
-                        <i
-                            class="arrow"
-                            data-lucide="chevron-right"
-                        ></i>
+                            <i
+                                class="arrow"
+                                data-lucide="chevron-right"
+                            ></i>
 
-                    </article>
+                        </article>
 
 
 
-                    <!-- ESCUDOS -->
+                        <article class="category-card">
 
-                    <article class="category-card glass">
+                            <div class="category-icon">
+                                <i data-lucide="shirt"></i>
+                            </div>
 
-                        <div class="category-icon">
+                            <div>
+                                <h4>Armaduras</h4>
+                                <p>Equipamiento de Link</p>
+                            </div>
 
-                            <i data-lucide="shield"></i>
+                            <i
+                                class="arrow"
+                                data-lucide="chevron-right"
+                            ></i>
 
-                        </div>
+                        </article>
 
 
-                        <div>
-
-                            <h4>
-                                Escudos
-                            </h4>
-
-                            <p>
-                                Protección de Hyrule
-                            </p>
-
-                        </div>
-
-
-                        <i
-                            class="arrow"
-                            data-lucide="chevron-right"
-                        ></i>
-
-                    </article>
-
-
-
-                    <!-- ARMADURAS -->
-
-                    <article class="category-card glass">
-
-                        <div class="category-icon">
-
-                            <i data-lucide="shirt"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <h4>
-                                Armaduras
-                            </h4>
-
-                            <p>
-                                Equipamiento especial
-                            </p>
-
-                        </div>
-
-
-                        <i
-                            class="arrow"
-                            data-lucide="chevron-right"
-                        ></i>
-
-                    </article>
-
-
-
-                    <!-- ENEMIGOS -->
-
-                    <article class="category-card glass">
-
-                        <div class="category-icon">
-
-                            <i data-lucide="skull"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <h4>
-                                Enemigos
-                            </h4>
-
-                            <p>
-                                Bestias y criaturas
-                            </p>
-
-                        </div>
-
-
-                        <i
-                            class="arrow"
-                            data-lucide="chevron-right"
-                        ></i>
-
-                    </article>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     MAPA
-                ================================================== -->
-
-                <div class="section-header map-header">
-
-                    <div>
-
-                        <span>
-                            Exploración
-                        </span>
-
-                        <h3>
-                            Mapa de Hyrule
-                        </h3>
 
                     </div>
 
-
-                    <span class="map-status">
-
-                        <span></span>
-
-                        Próximamente
-
-                    </span>
-
-                </div>
-
-
-
-                <div class="map-preview glass">
-
-
-                    <div class="map-grid"></div>
-
-
-                    <div class="map-center">
-
-
-                        <div class="map-icon">
-
-                            <i data-lucide="map"></i>
-
-                        </div>
-
-
-                        <h3>
-                            Mapa interactivo
-                        </h3>
-
-
-                        <p>
-
-                            Aquí podremos explorar Hyrule y localizar
-                            santuarios, enemigos, armas, materiales
-                            y mucho más.
-
-                        </p>
-
-                    </div>
-
-                </div>
+                </section>
 
             </section>
 
-        </section>
+        </div>
 
     </main>
 
-
-    <!-- JAVASCRIPT -->
 
     <script src="script.js"></script>
 
