@@ -1,5 +1,6 @@
 // =========================================================
-// INICIALIZACIÓN
+// HYRULE COMPENDIUM
+// API + BUSCADOR + CATEGORÍAS + IMÁGENES
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeGameSelector();
     initializeSearch();
     initializeNavigation();
+
+    loadCompendium();
 
 });
 
@@ -28,9 +31,28 @@ const welcomeTitle =
 const welcomeDescription =
     document.getElementById("welcomeDescription");
 
+const mainContent =
+    document.querySelector(".main-content");
+
 
 // =========================================================
-// DATOS DE LOS JUEGOS
+// API
+// =========================================================
+
+// API actual del Hyrule Compendium
+const API_URL =
+    "https://api.hyrule-compendium.com/v3/compendium/all";
+
+
+// =========================================================
+// DATOS
+// =========================================================
+
+let compendium = [];
+
+
+// =========================================================
+// JUEGOS
 // =========================================================
 
 const games = {
@@ -57,200 +79,99 @@ const games = {
 
 
 // =========================================================
-// DATOS DEL COMPENDIO
+// CARGAR COMPENDIO
 // =========================================================
 
-const compendium = [
+async function loadCompendium() {
 
-    // ARMAS
+    try {
 
-    {
-        name: "Espada Maestra",
-        type: "Armas",
-        game: "Ambos juegos",
-        icon: "swords"
-    },
+        console.log("Cargando Hyrule Compendium...");
 
-    {
-        name: "Espada de Soldado",
-        type: "Armas",
-        game: "Ambos juegos",
-        icon: "swords"
-    },
+        const response =
+            await fetch(API_URL);
 
-    {
-        name: "Espada de Caballero",
-        type: "Armas",
-        game: "Ambos juegos",
-        icon: "swords"
-    },
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
 
-    {
-        name: "Espada de la Guardia Real",
-        type: "Armas",
-        game: "Ambos juegos",
-        icon: "swords"
-    },
+        const result =
+            await response.json();
 
+        console.log("Datos recibidos:", result);
 
-    // ESCUDOS
+        // La API devuelve los datos dentro de "data"
+        compendium =
+            Array.isArray(result.data)
+                ? result.data
+                : [];
 
-    {
-        name: "Escudo Hyliano",
-        type: "Escudos",
-        game: "Ambos juegos",
-        icon: "shield"
-    },
+        if (!compendium.length) {
+            throw new Error(
+                "La API no devolvió objetos."
+            );
+        }
 
-    {
-        name: "Escudo de Soldado",
-        type: "Escudos",
-        game: "Ambos juegos",
-        icon: "shield"
-    },
+        console.log(
+            `Objetos cargados: ${compendium.length}`
+        );
 
-    {
-        name: "Escudo de Caballero",
-        type: "Escudos",
-        game: "Ambos juegos",
-        icon: "shield"
-    },
-
-
-    // ARCOS
-
-    {
-        name: "Arco de Soldado",
-        type: "Arcos",
-        game: "Ambos juegos",
-        icon: "bow-arrow"
-    },
-
-    {
-        name: "Arco de Caballero",
-        type: "Arcos",
-        game: "Ambos juegos",
-        icon: "bow-arrow"
-    },
-
-    {
-        name: "Arco de la Guardia Real",
-        type: "Arcos",
-        game: "Ambos juegos",
-        icon: "bow-arrow"
-    },
-
-
-    // ARMADURAS
-
-    {
-        name: "Túnica del Héroe",
-        type: "Armaduras",
-        game: "Ambos juegos",
-        icon: "shirt"
-    },
-
-    {
-        name: "Capucha Hyliana",
-        type: "Armaduras",
-        game: "Ambos juegos",
-        icon: "shirt"
-    },
-
-    {
-        name: "Armadura Hyliana",
-        type: "Armaduras",
-        game: "Ambos juegos",
-        icon: "shirt"
-    },
-
-
-    // INGREDIENTES
-
-    {
-        name: "Manzana",
-        type: "Ingredientes",
-        game: "Ambos juegos",
-        icon: "apple"
-    },
-
-    {
-        name: "Hongo Hyrule",
-        type: "Ingredientes",
-        game: "Ambos juegos",
-        icon: "apple"
-    },
-
-
-    // ENEMIGOS
-
-    {
-        name: "Bokoblin",
-        type: "Enemigos",
-        game: "Ambos juegos",
-        icon: "skull"
-    },
-
-    {
-        name: "Moblin",
-        type: "Enemigos",
-        game: "Ambos juegos",
-        icon: "skull"
-    },
-
-    {
-        name: "Lizalfos",
-        type: "Enemigos",
-        game: "Ambos juegos",
-        icon: "skull"
-    },
-
-    {
-        name: "Guardian",
-        type: "Enemigos",
-        game: "Breath of the Wild",
-        icon: "skull"
-    },
-
-    {
-        name: "Gleeok",
-        type: "Enemigos",
-        game: "Tears of the Kingdom",
-        icon: "skull"
-    },
-
-
-    // MATERIALES
-
-    {
-        name: "Diamante",
-        type: "Materiales",
-        game: "Ambos juegos",
-        icon: "gem"
-    },
-
-    {
-        name: "Rubí",
-        type: "Materiales",
-        game: "Ambos juegos",
-        icon: "gem"
-    },
-
-    {
-        name: "Zafiro",
-        type: "Materiales",
-        game: "Ambos juegos",
-        icon: "gem"
-    },
-
-    {
-        name: "Topacio",
-        type: "Materiales",
-        game: "Ambos juegos",
-        icon: "gem"
     }
 
-];
+    catch (error) {
+
+        console.error(
+            "Error cargando el compendio:",
+            error
+        );
+
+        showApiError();
+
+    }
+
+}
+
+
+// =========================================================
+// ERROR DE API
+// =========================================================
+
+function showApiError() {
+
+    if (!mainContent) return;
+
+    mainContent.innerHTML = `
+
+        <section class="welcome-panel main-panel">
+
+            <div class="welcome-icon">
+                <i data-lucide="wifi-off"></i>
+            </div>
+
+            <span class="eyebrow">
+                <i data-lucide="alert-triangle"></i>
+                HYRULE COMPENDIUM
+            </span>
+
+            <h2>
+                No se pudo cargar el compendio
+            </h2>
+
+            <p>
+                La conexión con la API no está disponible
+                en este momento. Comprueba tu conexión
+                a Internet e inténtalo nuevamente.
+            </p>
+
+        </section>
+
+    `;
+
+    lucide.createIcons();
+
+}
 
 
 // =========================================================
@@ -281,12 +202,14 @@ function initializeGameSelector() {
 
 function changeGame(game) {
 
-    const data = games[game];
+    const data =
+        games[game];
 
     if (!data) return;
 
 
-    body.dataset.game = game;
+    body.dataset.game =
+        game;
 
 
     gameButtons.forEach(button => {
@@ -309,6 +232,102 @@ function changeGame(game) {
 
 
 // =========================================================
+// NORMALIZAR NOMBRE
+// =========================================================
+
+function normalizeText(text) {
+
+    return String(text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+}
+
+
+// =========================================================
+// TRADUCIR CATEGORÍAS
+// =========================================================
+
+function translateCategory(category) {
+
+    const categories = {
+
+        creatures: "Criaturas",
+        monsters: "Enemigos",
+        equipment: "Armas",
+        materials: "Materiales",
+        treasure: "Tesoros",
+        food: "Ingredientes"
+
+    };
+
+    return categories[
+        normalizeText(category)
+    ] || category;
+
+}
+
+
+// =========================================================
+// FILTRAR POR JUEGO
+// =========================================================
+
+function isItemAvailableForCurrentGame(item) {
+
+    const currentGame =
+        body.dataset.game;
+
+    if (currentGame === "all") {
+        return true;
+    }
+
+
+    // Algunos registros de la API
+    // contienen game_versions.
+
+    if (
+        item.game_versions &&
+        Array.isArray(item.game_versions)
+    ) {
+
+        const versions =
+            item.game_versions
+                .map(version =>
+                    normalizeText(version)
+                );
+
+        if (currentGame === "botw") {
+
+            return versions.some(version =>
+                version.includes("breath") ||
+                version.includes("botw")
+            );
+
+        }
+
+        if (currentGame === "totk") {
+
+            return versions.some(version =>
+                version.includes("tears") ||
+                version.includes("totk")
+            );
+
+        }
+
+    }
+
+
+    // Si no existe información específica,
+    // mostramos el objeto.
+
+    return true;
+
+}
+
+
+// =========================================================
 // BUSCADOR
 // =========================================================
 
@@ -321,120 +340,128 @@ function initializeSearch() {
         document.getElementById("searchResults");
 
 
-    searchInput.addEventListener("input", event => {
-
-        const value =
-            event.target.value
-                .trim()
-                .toLowerCase();
+    if (!searchInput) return;
 
 
-        if (!value) {
+    searchInput.addEventListener(
+        "input",
+        event => {
 
-            searchResults.innerHTML = "";
+            const value =
+                normalizeText(
+                    event.target.value
+                );
 
-            searchResults.classList.remove("visible");
 
-            return;
+            if (!value) {
+
+                searchResults.innerHTML =
+                    "";
+
+                searchResults.classList.remove(
+                    "visible"
+                );
+
+                return;
+
+            }
+
+
+            const results =
+                compendium
+                    .filter(item => {
+
+                        if (
+                            !isItemAvailableForCurrentGame(
+                                item
+                            )
+                        ) {
+                            return false;
+                        }
+
+
+                        const name =
+                            normalizeText(
+                                item.name
+                            );
+
+                        const category =
+                            normalizeText(
+                                item.category
+                            );
+
+                        const description =
+                            normalizeText(
+                                item.description
+                            );
+
+
+                        return (
+
+                            name.includes(value) ||
+
+                            category.includes(value) ||
+
+                            description.includes(value)
+
+                        );
+
+                    })
+                    .slice(0, 10);
+
+
+            renderSearchResults(
+                results,
+                searchResults
+            );
 
         }
-
-
-        const currentGame =
-            body.dataset.game;
-
-
-        const results =
-            compendium.filter(item => {
-
-                const matchesText =
-                    item.name
-                        .toLowerCase()
-                        .includes(value) ||
-
-                    item.type
-                        .toLowerCase()
-                        .includes(value);
-
-
-                if (!matchesText) {
-                    return false;
-                }
-
-
-                if (currentGame === "all") {
-                    return true;
-                }
-
-
-                if (currentGame === "botw") {
-
-                    return (
-                        item.game === "Ambos juegos" ||
-                        item.game === "Breath of the Wild"
-                    );
-
-                }
-
-
-                if (currentGame === "totk") {
-
-                    return (
-                        item.game === "Ambos juegos" ||
-                        item.game === "Tears of the Kingdom"
-                    );
-
-                }
-
-
-                return true;
-
-            });
-
-
-        renderSearchResults(
-            results,
-            searchResults
-        );
-
-    });
+    );
 
 
     // CTRL + K / CMD + K
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-        if (
-            (event.ctrlKey || event.metaKey) &&
-            event.key.toLowerCase() === "k"
-        ) {
+            if (
+                (event.ctrlKey || event.metaKey) &&
+                event.key.toLowerCase() === "k"
+            ) {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            searchInput.focus();
+                searchInput.focus();
 
-            searchInput.select();
+                searchInput.select();
+
+            }
 
         }
-
-    });
+    );
 
 
     // CLICK FUERA
 
-    document.addEventListener("click", event => {
+    document.addEventListener(
+        "click",
+        event => {
 
-        if (
-            !event.target.closest(".search-wrapper")
-        ) {
+            if (
+                !event.target.closest(
+                    ".search-wrapper"
+                )
+            ) {
 
-            searchResults.classList.remove(
-                "visible"
-            );
+                searchResults.classList.remove(
+                    "visible"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 
@@ -451,7 +478,7 @@ function renderSearchResults(
     container.innerHTML = "";
 
 
-    if (results.length === 0) {
+    if (!results.length) {
 
         container.innerHTML = `
 
@@ -460,14 +487,16 @@ function renderSearchResults(
                 <i data-lucide="search-x"></i>
 
                 <p>
-                    No encontramos nada con ese nombre.
+                    No encontramos ese objeto.
                 </p>
 
             </div>
 
         `;
 
-        container.classList.add("visible");
+        container.classList.add(
+            "visible"
+        );
 
         lucide.createIcons();
 
@@ -476,62 +505,86 @@ function renderSearchResults(
     }
 
 
-    results
-        .slice(0, 10)
-        .forEach(item => {
+    results.forEach(item => {
 
-            const result =
-                document.createElement("button");
-
-            result.className =
-                "search-result";
-
-
-            result.innerHTML = `
-
-                <div class="result-icon">
-
-                    <i data-lucide="${item.icon}"></i>
-
-                </div>
-
-
-                <div class="result-info">
-
-                    <div class="result-name">
-                        ${item.name}
-                    </div>
-
-                    <div class="result-type">
-                        ${item.type}
-                    </div>
-
-                </div>
-
-
-                <div class="result-game">
-                    ${item.game}
-                </div>
-
-            `;
-
-
-            result.addEventListener(
-                "click",
-                () => {
-
-                    openItem(item);
-
-                }
+        const result =
+            document.createElement(
+                "button"
             );
 
 
-            container.appendChild(result);
+        result.className =
+            "search-result";
 
-        });
+
+        result.innerHTML = `
+
+            <div class="result-icon">
+
+                ${
+                    item.image
+                    ? `
+                        <img
+                            src="${item.image}"
+                            alt="${item.name}"
+                            style="
+                                width:100%;
+                                height:100%;
+                                object-fit:contain;
+                                border-radius:8px;
+                            "
+                        >
+                    `
+                    :
+                    `
+                        <i data-lucide="package"></i>
+                    `
+                }
+
+            </div>
 
 
-    container.classList.add("visible");
+            <div class="result-info">
+
+                <div class="result-name">
+                    ${item.name}
+                </div>
+
+                <div class="result-type">
+                    ${translateCategory(item.category)}
+                </div>
+
+            </div>
+
+
+        `;
+
+
+        result.addEventListener(
+            "click",
+            () => {
+
+                openItem(item);
+
+                container.classList.remove(
+                    "visible"
+                );
+
+            }
+        );
+
+
+        container.appendChild(
+            result
+        );
+
+    });
+
+
+    container.classList.add(
+        "visible"
+    );
+
 
     lucide.createIcons();
 
@@ -545,41 +598,233 @@ function renderSearchResults(
 function initializeNavigation() {
 
     const navigationItems =
-        document.querySelectorAll(".nav-item");
+        document.querySelectorAll(
+            ".nav-item"
+        );
 
 
     navigationItems.forEach(item => {
 
-        item.addEventListener("click", () => {
+        item.addEventListener(
+            "click",
+            () => {
 
-            navigationItems.forEach(nav => {
-
-                nav.classList.remove("active");
-
-            });
-
-
-            item.classList.add("active");
-
-
-            const category =
-                item.textContent.trim();
+                navigationItems.forEach(
+                    nav => {
+                        nav.classList.remove(
+                            "active"
+                        );
+                    }
+                );
 
 
-            if (category === "Resumen") {
+                item.classList.add(
+                    "active"
+                );
 
-                showHome();
 
-                return;
+                const category =
+                    item.textContent.trim();
+
+
+                if (
+                    category === "Resumen"
+                ) {
+
+                    showHome();
+
+                    return;
+
+                }
+
+
+                openCategory(
+                    category
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+// =========================================================
+// CONVERTIR CATEGORÍA DE LA APP A API
+// =========================================================
+
+function categoryToApiCategory(
+    category
+) {
+
+    const map = {
+
+        "Armas": [
+            "equipment"
+        ],
+
+        "Escudos": [
+            "equipment"
+        ],
+
+        "Arcos": [
+            "equipment"
+        ],
+
+        "Armaduras": [
+            "equipment"
+        ],
+
+        "Ingredientes": [
+            "food"
+        ],
+
+        "Enemigos": [
+            "monsters"
+        ],
+
+        "Materiales": [
+            "materials"
+        ]
+
+    };
+
+
+    return map[category] || [];
+
+}
+
+
+// =========================================================
+// FILTRAR CATEGORÍA
+// =========================================================
+
+function getItemsByCategory(
+    category
+) {
+
+    const apiCategories =
+        categoryToApiCategory(
+            category
+        );
+
+
+    return compendium.filter(
+        item => {
+
+            const itemCategory =
+                normalizeText(
+                    item.category
+                );
+
+
+            if (
+                !apiCategories.includes(
+                    itemCategory
+                )
+            ) {
+                return false;
+            }
+
+
+            // Filtrado especial
+            // para separar armas,
+            // escudos, arcos y armaduras.
+
+            if (
+                category === "Escudos"
+            ) {
+
+                return normalizeText(
+                    item.name
+                ).includes("shield") ||
+                normalizeText(
+                    item.name
+                ).includes("escudo");
 
             }
 
 
-            openCategory(category);
+            if (
+                category === "Arcos"
+            ) {
 
-        });
+                return normalizeText(
+                    item.name
+                ).includes("bow") ||
+                normalizeText(
+                    item.name
+                ).includes("arco");
 
-    });
+            }
+
+
+            if (
+                category === "Armaduras"
+            ) {
+
+                return (
+                    item.name &&
+                    (
+                        normalizeText(
+                            item.name
+                        ).includes("armor") ||
+
+                        normalizeText(
+                            item.name
+                        ).includes("armour") ||
+
+                        normalizeText(
+                            item.name
+                        ).includes("tunic") ||
+
+                        normalizeText(
+                            item.name
+                        ).includes("hood") ||
+
+                        normalizeText(
+                            item.name
+                        ).includes("cap") ||
+
+                        normalizeText(
+                            item.name
+                        ).includes("helm")
+                    )
+                );
+
+            }
+
+
+            if (
+                category === "Armas"
+            ) {
+
+                const name =
+                    normalizeText(
+                        item.name
+                    );
+
+
+                return !(
+                    name.includes("shield") ||
+                    name.includes("escudo") ||
+                    name.includes("bow") ||
+                    name.includes("arco") ||
+                    name.includes("armor") ||
+                    name.includes("armour") ||
+                    name.includes("tunic") ||
+                    name.includes("hood") ||
+                    name.includes("helm")
+                );
+
+            }
+
+
+            return true;
+
+        }
+    );
 
 }
 
@@ -588,52 +833,14 @@ function initializeNavigation() {
 // ABRIR CATEGORÍA
 // =========================================================
 
-function openCategory(category) {
+function openCategory(
+    category
+) {
 
-    const mainContent =
-        document.querySelector(".main-content");
-
-
-    const currentGame =
-        body.dataset.game;
-
-
-    let items =
-        compendium.filter(item => {
-
-            if (item.type !== category) {
-                return false;
-            }
-
-
-            if (currentGame === "all") {
-                return true;
-            }
-
-
-            if (currentGame === "botw") {
-
-                return (
-                    item.game === "Ambos juegos" ||
-                    item.game === "Breath of the Wild"
-                );
-
-            }
-
-
-            if (currentGame === "totk") {
-
-                return (
-                    item.game === "Ambos juegos" ||
-                    item.game === "Tears of the Kingdom"
-                );
-
-            }
-
-
-            return true;
-
-        });
+    const items =
+        getItemsByCategory(
+            category
+        );
 
 
     mainContent.innerHTML = `
@@ -650,12 +857,14 @@ function openCategory(category) {
 
                 </span>
 
+
                 <h2>
                     ${category}
                 </h2>
 
+
                 <p>
-                    Explora todos los elementos de esta categoría.
+                    Explora los elementos de esta categoría.
                 </p>
 
             </div>
@@ -665,16 +874,38 @@ function openCategory(category) {
 
                 ${
                     items.length
-                    ? items.map(item => `
+
+                    ?
+
+                    items.map(
+                        item => `
 
                         <button
                             class="item-card"
-                            data-item-name="${item.name}"
+                            data-item-id="${item.id}"
                         >
 
-                            <div class="item-card-icon">
+                            <div class="item-card-image">
 
-                                <i data-lucide="${item.icon}"></i>
+                                ${
+                                    item.image
+
+                                    ?
+
+                                    `
+                                    <img
+                                        src="${item.image}"
+                                        alt="${item.name}"
+                                        loading="lazy"
+                                    >
+                                    `
+
+                                    :
+
+                                    `
+                                    <i data-lucide="package"></i>
+                                    `
+                                }
 
                             </div>
 
@@ -686,10 +917,13 @@ function openCategory(category) {
                                 </h3>
 
                                 <p>
-                                    ${item.game}
+                                    ${translateCategory(
+                                        item.category
+                                    )}
                                 </p>
 
                             </div>
+
 
                             <i
                                 data-lucide="chevron-right"
@@ -698,26 +932,29 @@ function openCategory(category) {
 
                         </button>
 
-                    `).join("")
+                        `
+                    ).join("")
 
                     :
 
                     `
 
-                        <div class="no-items">
+                    <div class="no-items">
 
-                            <i data-lucide="package-open"></i>
+                        <i
+                            data-lucide="package-open"
+                        ></i>
 
-                            <h3>
-                                No hay objetos disponibles
-                            </h3>
+                        <h3>
+                            No hay objetos disponibles
+                        </h3>
 
-                            <p>
-                                Todavía no tenemos información
-                                para esta categoría.
-                            </p>
+                        <p>
+                            No encontramos elementos
+                            para esta categoría.
+                        </p>
 
-                        </div>
+                    </div>
 
                     `
                 }
@@ -732,29 +969,43 @@ function openCategory(category) {
     lucide.createIcons();
 
 
-    // Click en cada objeto
+    // =====================================================
+    // CLICK EN OBJETO
+    // =====================================================
 
     document
         .querySelectorAll(".item-card")
         .forEach(card => {
 
-            card.addEventListener("click", () => {
+            card.addEventListener(
+                "click",
+                () => {
 
-                const itemName =
-                    card.dataset.itemName;
-
-                const item =
-                    compendium.find(
-                        element =>
-                            element.name === itemName
-                    );
+                    const id =
+                        Number(
+                            card.dataset.itemId
+                        );
 
 
-                if (item) {
-                    openItem(item);
+                    const item =
+                        compendium.find(
+                            element =>
+                                Number(
+                                    element.id
+                                ) === id
+                        );
+
+
+                    if (item) {
+
+                        openItem(
+                            item
+                        );
+
+                    }
+
                 }
-
-            });
+            );
 
         });
 
@@ -765,11 +1016,9 @@ function openCategory(category) {
 // ABRIR OBJETO
 // =========================================================
 
-function openItem(item) {
-
-    const mainContent =
-        document.querySelector(".main-content");
-
+function openItem(
+    item
+) {
 
     mainContent.innerHTML = `
 
@@ -790,18 +1039,53 @@ function openItem(item) {
 
             <div class="item-detail-card">
 
-                <div class="item-detail-icon">
 
-                    <i data-lucide="${item.icon}"></i>
+                <!-- IMAGEN -->
+
+                <div class="item-detail-image">
+
+                    ${
+                        item.image
+
+                        ?
+
+                        `
+                        <img
+                            src="${item.image}"
+                            alt="${item.name}"
+                        >
+                        `
+
+                        :
+
+                        `
+                        <div class="item-no-image">
+
+                            <i
+                                data-lucide="image-off"
+                            ></i>
+
+                            <span>
+                                Imagen no disponible
+                            </span>
+
+                        </div>
+                        `
+                    }
 
                 </div>
 
+
+
+                <!-- INFORMACIÓN -->
 
                 <div class="item-detail-content">
 
                     <span class="eyebrow">
 
-                        ${item.type}
+                        ${translateCategory(
+                            item.category
+                        )}
 
                     </span>
 
@@ -811,29 +1095,73 @@ function openItem(item) {
                     </h2>
 
 
-                    <p class="item-game">
+                    <p class="item-description">
 
-                        <strong>
-                            Juego:
-                        </strong>
-
-                        ${item.game}
+                        ${
+                            item.description ||
+                            "No hay descripción disponible."
+                        }
 
                     </p>
 
 
-                    <div class="item-description">
+                    ${
+                        item.common_locations &&
+                        item.common_locations.length
 
-                        <h3>
-                            Información
-                        </h3>
+                        ?
 
-                        <p>
-                            Aquí aparecerá toda la información
-                            de este objeto.
-                        </p>
+                        `
+                        <div class="item-info-block">
 
-                    </div>
+                            <h3>
+                                Ubicaciones
+                            </h3>
+
+                            <p>
+                                ${
+                                    item.common_locations
+                                        .join(", ")
+                                }
+                            </p>
+
+                        </div>
+                        `
+
+                        :
+
+                        ""
+                    }
+
+
+                    ${
+                        item.drops &&
+                        item.drops.length
+
+                        ?
+
+                        `
+                        <div class="item-info-block">
+
+                            <h3>
+                                Objetos que deja
+                            </h3>
+
+                            <p>
+                                ${
+                                    item.drops
+                                        .join(", ")
+                                }
+                            </p>
+
+                        </div>
+                        `
+
+                        :
+
+                        ""
+                    }
+
 
                 </div>
 
@@ -847,13 +1175,27 @@ function openItem(item) {
     lucide.createIcons();
 
 
+    // =====================================================
+    // VOLVER
+    // =====================================================
+
     document
-        .getElementById("backButton")
+        .getElementById(
+            "backButton"
+        )
         .addEventListener(
             "click",
             () => {
 
-                openCategory(item.type);
+                const category =
+                    translateCategory(
+                        item.category
+                    );
+
+
+                openCategory(
+                    category
+                );
 
             }
         );
@@ -862,7 +1204,7 @@ function openItem(item) {
 
 
 // =========================================================
-// VOLVER AL INICIO
+// INICIO
 // =========================================================
 
 function showHome() {
