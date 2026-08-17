@@ -7,9 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
 
     initializeGameSelector();
-
     initializeSearch();
-
     initializeNavigation();
 
 });
@@ -30,12 +28,6 @@ const welcomeTitle =
 const welcomeDescription =
     document.getElementById("welcomeDescription");
 
-const gameImage =
-    document.getElementById("gameImage");
-
-const mainPanel =
-    document.querySelector(".main-panel");
-
 
 // =========================================================
 // DATOS DE LOS JUEGOS
@@ -44,52 +36,33 @@ const mainPanel =
 const games = {
 
     botw: {
-
         title: "Breath of the Wild",
-
         description:
-            "Descubre armas, enemigos, lugares, materiales y secretos de Hyrule.",
-
-        image: "images/botw.jpg"
-
+            "Descubre armas, enemigos, materiales y secretos de Hyrule."
     },
-
 
     totk: {
-
         title: "Tears of the Kingdom",
-
         description:
-            "Explora Hyrule, las islas del cielo y las profundidades en una nueva aventura.",
-
-        image: "images/totk.jpg"
-
+            "Explora Hyrule, las islas del cielo y las profundidades."
     },
 
-
     all: {
-
         title: "Hyrule",
-
         description:
-            "Explora todo el contenido de Breath of the Wild y Tears of the Kingdom.",
-
-        image: "images/botw-totk.jpg"
-
+            "Explora todo el contenido de Breath of the Wild y Tears of the Kingdom."
     }
 
 };
 
 
 // =========================================================
-// DATOS PARA EL BUSCADOR
+// DATOS DEL COMPENDIO
 // =========================================================
 
 const compendium = [
 
-    // =========================
     // ARMAS
-    // =========================
 
     {
         name: "Espada Maestra",
@@ -119,24 +92,8 @@ const compendium = [
         icon: "swords"
     },
 
-    {
-        name: "Espada de Boko",
-        type: "Armas",
-        game: "Ambos juegos",
-        icon: "swords"
-    },
 
-    {
-        name: "Espada de Lizalfos",
-        type: "Armas",
-        game: "Ambos juegos",
-        icon: "swords"
-    },
-
-
-    // =========================
     // ESCUDOS
-    // =========================
 
     {
         name: "Escudo Hyliano",
@@ -159,17 +116,8 @@ const compendium = [
         icon: "shield"
     },
 
-    {
-        name: "Escudo de Boko",
-        type: "Escudos",
-        game: "Ambos juegos",
-        icon: "shield"
-    },
 
-
-    // =========================
     // ARCOS
-    // =========================
 
     {
         name: "Arco de Soldado",
@@ -192,17 +140,8 @@ const compendium = [
         icon: "bow-arrow"
     },
 
-    {
-        name: "Arco de Boko",
-        type: "Arcos",
-        game: "Ambos juegos",
-        icon: "bow-arrow"
-    },
 
-
-    // =========================
     // ARMADURAS
-    // =========================
 
     {
         name: "Túnica del Héroe",
@@ -225,17 +164,25 @@ const compendium = [
         icon: "shirt"
     },
 
+
+    // INGREDIENTES
+
     {
-        name: "Conjunto de Sigilo",
-        type: "Armaduras",
+        name: "Manzana",
+        type: "Ingredientes",
         game: "Ambos juegos",
-        icon: "shirt"
+        icon: "apple"
+    },
+
+    {
+        name: "Hongo Hyrule",
+        type: "Ingredientes",
+        game: "Ambos juegos",
+        icon: "apple"
     },
 
 
-    // =========================
     // ENEMIGOS
-    // =========================
 
     {
         name: "Bokoblin",
@@ -272,17 +219,8 @@ const compendium = [
         icon: "skull"
     },
 
-    {
-        name: "Lynel",
-        type: "Enemigos",
-        game: "Ambos juegos",
-        icon: "skull"
-    },
 
-
-    // =========================
     // MATERIALES
-    // =========================
 
     {
         name: "Diamante",
@@ -310,79 +248,6 @@ const compendium = [
         type: "Materiales",
         game: "Ambos juegos",
         icon: "gem"
-    },
-
-
-    // =========================
-    // INGREDIENTES
-    // =========================
-
-    {
-        name: "Manzana",
-        type: "Ingredientes",
-        game: "Ambos juegos",
-        icon: "apple"
-    },
-
-    {
-        name: "Hongo Hyrule",
-        type: "Ingredientes",
-        game: "Ambos juegos",
-        icon: "apple"
-    },
-
-    {
-        name: "Hearty Radish",
-        type: "Ingredientes",
-        game: "Ambos juegos",
-        icon: "apple"
-    },
-
-
-    // =========================
-    // LUGARES
-    // =========================
-
-    {
-        name: "Castillo de Hyrule",
-        type: "Ubicaciones",
-        game: "Ambos juegos",
-        icon: "map-pin"
-    },
-
-    {
-        name: "Aldea Kakariko",
-        type: "Ubicaciones",
-        game: "Ambos juegos",
-        icon: "map-pin"
-    },
-
-    {
-        name: "Aldea Hateno",
-        type: "Ubicaciones",
-        game: "Ambos juegos",
-        icon: "map-pin"
-    },
-
-    {
-        name: "Montaña de la Muerte",
-        type: "Ubicaciones",
-        game: "Ambos juegos",
-        icon: "map-pin"
-    },
-
-    {
-        name: "Islas del Cielo",
-        type: "Ubicaciones",
-        game: "Tears of the Kingdom",
-        icon: "map-pin"
-    },
-
-    {
-        name: "Las Profundidades",
-        type: "Ubicaciones",
-        game: "Tears of the Kingdom",
-        icon: "map-pin"
     }
 
 ];
@@ -416,72 +281,29 @@ function initializeGameSelector() {
 
 function changeGame(game) {
 
-    if (body.dataset.game === game) {
-        return;
-    }
-
-
     const data = games[game];
 
-    if (!data) {
-        return;
-    }
+    if (!data) return;
 
 
-    mainPanel.classList.add("changing");
+    body.dataset.game = game;
 
 
-    setTimeout(() => {
+    gameButtons.forEach(button => {
 
-        // Cambiar tema
+        button.classList.toggle(
+            "active",
+            button.dataset.gameSelect === game
+        );
 
-        body.dataset.game = game;
-
-
-        // Cambiar botón activo
-
-        gameButtons.forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.gameSelect === game
-            );
-
-        });
+    });
 
 
-        // Cambiar texto
+    welcomeTitle.textContent =
+        data.title;
 
-        welcomeTitle.textContent =
-            data.title;
-
-        welcomeDescription.textContent =
-            data.description;
-
-
-        // Cambiar imagen
-
-        gameImage.style.opacity = "0";
-
-
-        setTimeout(() => {
-
-            gameImage.src = data.image;
-
-            gameImage.alt = data.title;
-
-            gameImage.onload = () => {
-
-                gameImage.style.opacity = "0.82";
-
-            };
-
-        }, 150);
-
-
-        mainPanel.classList.remove("changing");
-
-    }, 250);
+    welcomeDescription.textContent =
+        data.description;
 
 }
 
@@ -499,10 +321,6 @@ function initializeSearch() {
         document.getElementById("searchResults");
 
 
-    // ---------------------------------------------
-    // ESCRIBIR
-    // ---------------------------------------------
-
     searchInput.addEventListener("input", event => {
 
         const value =
@@ -510,8 +328,6 @@ function initializeSearch() {
                 .trim()
                 .toLowerCase();
 
-
-        // Si está vacío
 
         if (!value) {
 
@@ -524,73 +340,54 @@ function initializeSearch() {
         }
 
 
-        // Juego actual
-
         const currentGame =
             body.dataset.game;
 
 
-        // Buscar coincidencias
-
         const results =
             compendium.filter(item => {
 
-                const name =
-                    item.name.toLowerCase();
-
-                const type =
-                    item.type.toLowerCase();
-
-                const game =
-                    item.game.toLowerCase();
-
-
                 const matchesText =
-                    name.includes(value) ||
-                    type.includes(value) ||
-                    game.includes(value);
+                    item.name
+                        .toLowerCase()
+                        .includes(value) ||
+
+                    item.type
+                        .toLowerCase()
+                        .includes(value);
 
 
-                // Si está en "ambos"
-
-                if (currentGame === "all") {
-
-                    return matchesText;
-
+                if (!matchesText) {
+                    return false;
                 }
 
 
-                // BOTW
+                if (currentGame === "all") {
+                    return true;
+                }
+
 
                 if (currentGame === "botw") {
 
                     return (
-                        matchesText &&
-                        (
-                            item.game === "Ambos juegos" ||
-                            item.game === "Breath of the Wild"
-                        )
+                        item.game === "Ambos juegos" ||
+                        item.game === "Breath of the Wild"
                     );
 
                 }
 
-
-                // TOTK
 
                 if (currentGame === "totk") {
 
                     return (
-                        matchesText &&
-                        (
-                            item.game === "Ambos juegos" ||
-                            item.game === "Tears of the Kingdom"
-                        )
+                        item.game === "Ambos juegos" ||
+                        item.game === "Tears of the Kingdom"
                     );
 
                 }
 
 
-                return matchesText;
+                return true;
 
             });
 
@@ -603,17 +400,12 @@ function initializeSearch() {
     });
 
 
-    // ---------------------------------------------
-    // ABRIR BUSCADOR CON CTRL + K / CMD + K
-    // ---------------------------------------------
+    // CTRL + K / CMD + K
 
     document.addEventListener("keydown", event => {
 
         if (
-            (
-                event.ctrlKey ||
-                event.metaKey
-            ) &&
+            (event.ctrlKey || event.metaKey) &&
             event.key.toLowerCase() === "k"
         ) {
 
@@ -628,9 +420,7 @@ function initializeSearch() {
     });
 
 
-    // ---------------------------------------------
     // CLICK FUERA
-    // ---------------------------------------------
 
     document.addEventListener("click", event => {
 
@@ -650,7 +440,7 @@ function initializeSearch() {
 
 
 // =========================================================
-// MOSTRAR RESULTADOS
+// RESULTADOS DEL BUSCADOR
 // =========================================================
 
 function renderSearchResults(
@@ -660,8 +450,6 @@ function renderSearchResults(
 
     container.innerHTML = "";
 
-
-    // No hay resultados
 
     if (results.length === 0) {
 
@@ -687,8 +475,6 @@ function renderSearchResults(
 
     }
 
-
-    // Mostrar máximo 10
 
     results
         .slice(0, 10)
@@ -734,7 +520,7 @@ function renderSearchResults(
                 "click",
                 () => {
 
-                    selectSearchResult(item);
+                    openItem(item);
 
                 }
             );
@@ -748,36 +534,6 @@ function renderSearchResults(
     container.classList.add("visible");
 
     lucide.createIcons();
-
-}
-
-
-// =========================================================
-// SELECCIONAR RESULTADO
-// =========================================================
-
-function selectSearchResult(item) {
-
-    const searchInput =
-        document.getElementById("searchInput");
-
-    const searchResults =
-        document.getElementById("searchResults");
-
-
-    searchInput.value =
-        item.name;
-
-
-    searchResults.classList.remove(
-        "visible"
-    );
-
-
-    console.log(
-        "Elemento seleccionado:",
-        item
-    );
 
 }
 
@@ -805,8 +561,312 @@ function initializeNavigation() {
 
             item.classList.add("active");
 
+
+            const category =
+                item.textContent.trim();
+
+
+            if (category === "Resumen") {
+
+                showHome();
+
+                return;
+
+            }
+
+
+            openCategory(category);
+
         });
 
     });
+
+}
+
+
+// =========================================================
+// ABRIR CATEGORÍA
+// =========================================================
+
+function openCategory(category) {
+
+    const mainContent =
+        document.querySelector(".main-content");
+
+
+    const currentGame =
+        body.dataset.game;
+
+
+    let items =
+        compendium.filter(item => {
+
+            if (item.type !== category) {
+                return false;
+            }
+
+
+            if (currentGame === "all") {
+                return true;
+            }
+
+
+            if (currentGame === "botw") {
+
+                return (
+                    item.game === "Ambos juegos" ||
+                    item.game === "Breath of the Wild"
+                );
+
+            }
+
+
+            if (currentGame === "totk") {
+
+                return (
+                    item.game === "Ambos juegos" ||
+                    item.game === "Tears of the Kingdom"
+                );
+
+            }
+
+
+            return true;
+
+        });
+
+
+    mainContent.innerHTML = `
+
+        <section class="category-page">
+
+            <div class="category-page-header">
+
+                <span class="eyebrow">
+
+                    <i data-lucide="library"></i>
+
+                    COMPENDIO
+
+                </span>
+
+                <h2>
+                    ${category}
+                </h2>
+
+                <p>
+                    Explora todos los elementos de esta categoría.
+                </p>
+
+            </div>
+
+
+            <div class="items-grid">
+
+                ${
+                    items.length
+                    ? items.map(item => `
+
+                        <button
+                            class="item-card"
+                            data-item-name="${item.name}"
+                        >
+
+                            <div class="item-card-icon">
+
+                                <i data-lucide="${item.icon}"></i>
+
+                            </div>
+
+
+                            <div class="item-card-info">
+
+                                <h3>
+                                    ${item.name}
+                                </h3>
+
+                                <p>
+                                    ${item.game}
+                                </p>
+
+                            </div>
+
+                            <i
+                                data-lucide="chevron-right"
+                                class="item-arrow"
+                            ></i>
+
+                        </button>
+
+                    `).join("")
+
+                    :
+
+                    `
+
+                        <div class="no-items">
+
+                            <i data-lucide="package-open"></i>
+
+                            <h3>
+                                No hay objetos disponibles
+                            </h3>
+
+                            <p>
+                                Todavía no tenemos información
+                                para esta categoría.
+                            </p>
+
+                        </div>
+
+                    `
+                }
+
+            </div>
+
+        </section>
+
+    `;
+
+
+    lucide.createIcons();
+
+
+    // Click en cada objeto
+
+    document
+        .querySelectorAll(".item-card")
+        .forEach(card => {
+
+            card.addEventListener("click", () => {
+
+                const itemName =
+                    card.dataset.itemName;
+
+                const item =
+                    compendium.find(
+                        element =>
+                            element.name === itemName
+                    );
+
+
+                if (item) {
+                    openItem(item);
+                }
+
+            });
+
+        });
+
+}
+
+
+// =========================================================
+// ABRIR OBJETO
+// =========================================================
+
+function openItem(item) {
+
+    const mainContent =
+        document.querySelector(".main-content");
+
+
+    mainContent.innerHTML = `
+
+        <section class="item-detail">
+
+            <button
+                class="back-button"
+                id="backButton"
+                type="button"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+                Volver
+
+            </button>
+
+
+            <div class="item-detail-card">
+
+                <div class="item-detail-icon">
+
+                    <i data-lucide="${item.icon}"></i>
+
+                </div>
+
+
+                <div class="item-detail-content">
+
+                    <span class="eyebrow">
+
+                        ${item.type}
+
+                    </span>
+
+
+                    <h2>
+                        ${item.name}
+                    </h2>
+
+
+                    <p class="item-game">
+
+                        <strong>
+                            Juego:
+                        </strong>
+
+                        ${item.game}
+
+                    </p>
+
+
+                    <div class="item-description">
+
+                        <h3>
+                            Información
+                        </h3>
+
+                        <p>
+                            Aquí aparecerá toda la información
+                            de este objeto.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    `;
+
+
+    lucide.createIcons();
+
+
+    document
+        .getElementById("backButton")
+        .addEventListener(
+            "click",
+            () => {
+
+                openCategory(item.type);
+
+            }
+        );
+
+}
+
+
+// =========================================================
+// VOLVER AL INICIO
+// =========================================================
+
+function showHome() {
+
+    location.reload();
 
 }
